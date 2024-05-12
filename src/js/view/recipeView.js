@@ -1,12 +1,12 @@
+// import Fraction from 'fractional';
+// console.log(new Fraction);
+
 class RecipeView{
   #parentElement = document.querySelector('.recipe')
   #data
-
-  render(data){
-    this.#data = data
-    
-    recipeContainer.innerHTML = ''; 
-    recipeContainer.insertAdjacentHTML('afterbegin', markut)
+  
+  #clear(){
+    this.#parentElement.innerHTML = ''; 
   }
 
   #generateMarkut(){
@@ -62,18 +62,7 @@ class RecipeView{
         <div class="recipe__ingredients">
           <h2 class="heading--2">Recipe ingredients</h2>
           <ul class="recipe__ingredient-list">
-          ${this.#data.ingredients.map(ingredient => {
-            return `<li class="recipe__ingredient">
-            <svg class="recipe__icon">
-              <use href="src/img/icons.svg#icon-check"></use>
-            </svg>
-            <div class="recipe__quantity">${ingredient.quantity}</div>
-            <div class="recipe__description">
-              <span class="recipe__unit">${ingredient.unit}</span>
-              ${ingredient.description}
-            </div>
-          </li>`
-          } ).join('')}
+          ${this.#data.ingredients.map(ingredient => this.#generateMarkutIngredient(ingredient)).join('')}
 
             <li class="recipe__ingredient">
               <svg class="recipe__icon">
@@ -107,6 +96,39 @@ class RecipeView{
           </a>
         </div>
     `
+  }
+
+  #generateMarkutIngredient(ing){
+    return `<li class="recipe__ingredient">
+            <svg class="recipe__icon">
+              <use href="src/img/icons.svg#icon-check"></use>
+            </svg>
+            <div class="recipe__quantity">${ing.quantity}</div>
+            <div class="recipe__description">
+              <span class="recipe__unit">${ing.unit}</span>
+              ${ing.description}
+            </div>
+          </li>`
+  }
+
+  renderSpinner(){
+    const markut = `
+    <div class="spinner">
+      <svg>
+        <use href="src/img/icons.svg#icon-loader"></use>
+      </svg>
+    </div>
+    `
+    this.#parentElement.innerHTML = ''
+    this.#parentElement.insertAdjacentHTML('afterbegin', markut)
+
+  }
+
+  render(data){
+    this.#data = data
+    const markut = this.#generateMarkut();
+    this.#clear();
+    this.#parentElement.insertAdjacentHTML('afterbegin', markut)
   }
 }
 
